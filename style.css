@@ -1,0 +1,80 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.pantalla {
+  display: none;
+  background: #fff;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.activo {
+  display: block;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+button, input[type="submit"] {
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+button:hover, input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+input[type="text"], input[type="tel"], input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.ubicacion-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#preview img {
+  max-width: 80px;
+  height: auto;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#listaClientes div {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+#listaClientes div:hover {
+  background-color: #f1f1f1;
+}
+
+#buscarCliente {
+  margin-bottom: 10px;
+}
