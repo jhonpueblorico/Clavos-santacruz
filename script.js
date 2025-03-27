@@ -1,87 +1,49 @@
-// Manejo de pantallas
-function cambiarPantalla(id) {
-  document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activo'));
-  document.getElementById(id).classList.add('activo');
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes Morosos con Geolocalización</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-// Obtener ubicación GPS
-function obtenerUbicacion() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const coords = `${pos.coords.latitude}, ${pos.coords.longitude}`;
-      document.getElementById('ubicacion').value = coords;
-      localStorage.setItem('ultimaUbicacion', coords); // Guarda la ubicación
-    }, () => {
-      alert('Error al obtener ubicación');
-    });
-  } else {
-    alert('La geolocalización no es compatible.');
-  }
-}
+  <div id="inicio" class="pantalla activo">
+    <h2>Sistema de Clientes Morosos</h2>
+    <button onclick="cambiarPantalla('registro')">Registrar Cliente</button>
+    <button onclick="cambiarPantalla('lista')">Ver Lista de Clientes</button>
+  </div>
 
-// Previsualizar imágenes
-function previewImages(event) {
-  const preview = document.getElementById('preview');
-  preview.innerHTML = '';
-  [...event.target.files].forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-}
+  <div id="registro" class="pantalla">
+    <h2>Registrar Cliente</h2>
+    <form id="clienteForm">
+      <input type="text" id="nombre" placeholder="Nombre del cliente" required />
+      <input type="text" id="cedula" placeholder="Cédula" required />
+      <input type="text" id="direccion" placeholder="Dirección" required />
+      <div class="ubicacion-container">
+        <input type="text" id="ubicacion" placeholder="Ubicación GPS" readonly required />
+        <button type="button" onclick="obtenerUbicacion()">Obtener Ubicación</button>
+      </div>
+      <input type="tel" id="telefono" placeholder="Teléfono" required />
+      <input type="file" id="fotos" multiple accept="image/*" onchange="previewImages(event)" />
+      <div id="preview"></div>
+      <input type="submit" value="Guardar Cliente" />
+    </form>
+    <button onclick="cambiarPantalla('inicio')">Volver</button>
+  </div>
 
-// Guardar cliente en localStorage
-document.getElementById('clienteForm').addEventListener('submit', e => {
-  e.preventDefault();
+  <div id="lista" class="pantalla">
+    <h2>Lista de Clientes Morosos</h2>
+    <input type="text" id="buscarCliente" placeholder="Buscar cliente..." onkeyup="buscarClientes()" />
+    <div id="listaClientes"></div>
+    <button onclick="cambiarPantalla('inicio')">Volver</button>
+  </div>
 
-  const cliente = {
-    nombre: document.getElementById('nombre').value,
-    cedula: document.getElementById('cedula').value,
-    direccion: document.getElementById('direccion').value,
-    ubicacion: document.getElementById('ubicacion').value,
-    telefono: document.getElementById('telefono').value,
-    fotos: [] // Las fotos requieren lógica adicional para almacenamiento
-  };
-
-  const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
-  clientes.push(cliente);
-  localStorage.setItem('clientes', JSON.stringify(clientes));
-
-  alert('Cliente guardado con éxito.');
-  e.target.reset();
-  document.getElementById('preview').innerHTML = '';
-});
-
-// Buscar clientes
-function buscarClientes() {
-  const termino = document.getElementById('buscarCliente').value.toLowerCase();
-  const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
-  const resultado = clientes.filter(c => c.nombre.toLowerCase().includes(termino));
-
-  const listaClientes = document.getElementById('listaClientes');
-  listaClientes.innerHTML = resultado.map((c, i) =>
-    `<div onclick="mostrarDetalles(${i})">${c.nombre}</div>`
-  ).join('');
-}
-
-// Mostrar detalles del cliente
-function mostrarDetalles(index) {
-  const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
-  const c = clientes[index];
-
-  document.getElementById('detalleCliente').innerHTML = `
-    <p><strong>Nombre:</strong> ${c.nombre}</p>
-    <p><strong>Cédula:</strong> ${c.cedula}</p>
-    <p><strong>Dirección:</strong> ${c.direccion}</p>
-    <p><strong>Ubicación:</strong> ${c.ubicacion}</p>
-    <p><strong>Teléfono:</strong> ${c.telefono}</p>
-  `;
-  cambiarPantalla('detalles');
-}
-
-// Mostrar todos los clientes al abrir la lista
-document.getElementById('lista').addEventListener('transitionstart', buscarClientes);
+  <div id="detalles" class="pantalla">
+    <h2>Detalles del Cliente</h2>
+    <div id="detalleCliente"></div>
+    <button onclick="cambiarPantalla('lista')">Volver</button>
+  </div>
+<script type="module" src="script.js"></script>  <script src="script.js"></script>
+</body>
+</html>
